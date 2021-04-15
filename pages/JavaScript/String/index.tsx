@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Fab } from "@material-ui/core";
 import { PlayArrow } from "@material-ui/icons";
 import objectInspect from "object-inspect";
+import { Editor } from "../../../components/editor";
+import { EditorView } from "@codemirror/view";
 
 const fabStyle = {
   position: "absolute",
@@ -20,6 +22,7 @@ const reduceArgs = (formattedList: any[], arg: any) => [
 const formatArgs = (args: any[]) => args.reduce(reduceArgs, []).join(" ");
 
 const StringPage = () => {
+  const [view, setView] = React.useState<EditorView | null>(null);
   const [result, setResult] = React.useState("");
   const [error, setError] = React.useState("");
 
@@ -34,12 +37,9 @@ const StringPage = () => {
     setError(formattedError);
     originalConsoleError.call(console, ...args);
   };
-
-  const codeRef = React.useRef<HTMLTextAreaElement>(null);
   const evaluateCode = () => {
-    if (codeRef.current === null) return;
-    const code = codeRef.current.value;
-    if (code.length === 0) return;
+    if (view === null) return;
+    const code = view.state.doc.toString();
     try {
       new Function(code)();
     } catch (e) {
@@ -51,7 +51,7 @@ const StringPage = () => {
     <>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Box sx={{ position: "relative", flex: 2 }}>
-          <textarea ref={codeRef} />
+          <Editor setView={setView} />
           <Fab size="small" sx={fabStyle} onClick={evaluateCode}>
             <PlayArrow />
           </Fab>
