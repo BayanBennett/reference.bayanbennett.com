@@ -4,8 +4,9 @@ import { PlayArrow } from "@material-ui/icons";
 import objectInspect from "object-inspect";
 import { Editor } from "../../../components/editor";
 import { EditorView } from "@codemirror/view";
+import { SxProps } from "@material-ui/system";
 
-const fabStyle = {
+const fabStyle: SxProps = {
   position: "absolute",
   bottom: 0,
   right: 0,
