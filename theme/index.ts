@@ -5,12 +5,10 @@ import {
 } from "@material-ui/core/colors";
 
 // Create a theme instance.
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
   palette: {
     mode: "dark",
     primary,
     secondary,
   },
 });
-
-export default theme;
