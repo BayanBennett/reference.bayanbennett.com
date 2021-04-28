@@ -7,7 +7,7 @@ import { cache } from "./_app";
 
 const { extractCritical } = createEmotionServer(cache);
 
-class _Document extends Document {
+export default class extends Document {
   render() {
     return (
       <Html lang="en">
@@ -25,32 +25,30 @@ class _Document extends Document {
       </Html>
     );
   }
-}
 
-_Document.getInitialProps = async (ctx) => {
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
+  static getInitialProps: typeof Document.getInitialProps = async (ctx) => {
+    const sheets = new ServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
 
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    });
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+      });
 
-  const initialProps = await Document.getInitialProps(ctx);
-  const styles = extractCritical(initialProps.html);
+    const initialProps = await Document.getInitialProps(ctx);
+    const styles = extractCritical(initialProps.html);
 
-  return {
-    ...initialProps,
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement(),
-      <style
-        key="emotion-style-tag"
-        data-emotion={`css ${styles.ids.join(" ")}`}
-        dangerouslySetInnerHTML={{ __html: styles.css }}
-      />,
-    ],
+    return {
+      ...initialProps,
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheets.getStyleElement(),
+        <style
+          key="emotion-style-tag"
+          data-emotion={`css ${styles.ids.join(" ")}`}
+          dangerouslySetInnerHTML={{ __html: styles.css }}
+        />,
+      ],
+    };
   };
-};
-
-export default _Document;
+}
