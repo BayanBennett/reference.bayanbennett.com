@@ -1,14 +1,16 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import {
-  blueGrey as primary,
-  brown as secondary,
-} from "@material-ui/core/colors";
+import { darkScrollbar, colors, createMuiTheme } from "@material-ui/core";
 
-// Create a theme instance.
 export const theme = createMuiTheme({
   palette: {
     mode: "dark",
-    primary,
-    secondary,
+    primary: colors.blueGrey,
+    secondary: colors.brown,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: darkScrollbar(),
+      },
+    },
   },
 });
