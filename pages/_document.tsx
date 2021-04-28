@@ -28,12 +28,13 @@ export default class extends Document {
 
   static getInitialProps: typeof Document.getInitialProps = async (ctx) => {
     const sheets = new ServerStyleSheets();
-    const originalRenderPage = ctx.renderPage;
 
-    ctx.renderPage = () =>
-      originalRenderPage({
-        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-      });
+    ctx.renderPage = new Proxy(ctx.renderPage, {
+      apply: (target) =>
+        target({
+          enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+        }),
+    });
 
     const initialProps = await Document.getInitialProps(ctx);
     const styles = extractCritical(initialProps.html);
