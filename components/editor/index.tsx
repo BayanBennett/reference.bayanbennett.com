@@ -1,13 +1,17 @@
 import React from "react";
 import { EditorView } from "@codemirror/view";
 import { EditorState } from "@codemirror/state";
+import { extensions } from "./extensions";
 
 type EditorProps = {
   setView: (view: EditorView | null) => void;
   children?: never;
 };
 
-const state = EditorState.create({ doc: "console.log('hello there')" });
+const state = EditorState.create({
+  doc: "console.log('hello there')",
+  extensions,
+});
 
 export const Editor: React.FunctionComponent<EditorProps> = ({ setView }) => {
   const editorRef = React.useRef<HTMLElement>(null);
