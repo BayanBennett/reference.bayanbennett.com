@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@codemirror/gutter": "^0.18.2",
     "@codemirror/highlight": "^0.18.3",
     "@codemirror/lang-javascript": "^0.18.0",
     "@codemirror/matchbrackets": "^0.18.0",
