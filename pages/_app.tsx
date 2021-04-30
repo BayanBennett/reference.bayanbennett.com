@@ -19,7 +19,6 @@ const _App = (props: AppProps) => {
       jssStyles.parentElement!.removeChild(jssStyles);
     }
   }, []);
-
   return (
     <CacheProvider value={cache}>
       <Head>
