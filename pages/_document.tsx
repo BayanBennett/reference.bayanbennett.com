@@ -6,6 +6,7 @@ import { theme } from "../theme";
 import { cache } from "./_app";
 
 const { extractCritical } = createEmotionServer(cache);
+const sheets = new ServerStyleSheets();
 
 export default class extends Document {
   render() {
@@ -27,8 +28,6 @@ export default class extends Document {
   }
 
   static getInitialProps: typeof Document.getInitialProps = async (ctx) => {
-    const sheets = new ServerStyleSheets();
-
     ctx.renderPage = new Proxy(ctx.renderPage, {
       apply: (target) =>
         target({
