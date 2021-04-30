@@ -4,7 +4,11 @@ export const theme = createMuiTheme({
   palette: {
     mode: "dark",
     primary: colors.blueGrey,
-    secondary: colors.brown,
+    secondary: {
+      ...colors.deepPurple,
+      light: colors.deepPurple[200],
+    },
+    success: colors.lightGreen,
   },
   components: {
     MuiCssBaseline: {
