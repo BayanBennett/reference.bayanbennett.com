@@ -23,6 +23,7 @@
     "@material-ui/styles": "^5.0.0-alpha.28",
     "@material-ui/system": "^5.0.0-alpha.29",
     "@tsconfig/recommended": "^1.0.1",
+    "globby": "^11.0.3",
     "next": "^10.2.0",
     "object-inspect": "^1.9.0",
     "react": "17.0.2",
