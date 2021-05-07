@@ -5,21 +5,23 @@ import { extensions } from "./extensions";
 
 type EditorProps = {
   setView: (view: EditorView | null) => void;
+  initialCode: string;
   children?: never;
 };
 
-const state = EditorState.create({
-  doc: "console.log('hello there')",
-  extensions,
-});
-
-export const Editor: React.FunctionComponent<EditorProps> = ({ setView }) => {
+export const Editor: React.FunctionComponent<EditorProps> = ({
+  setView,
+  initialCode: doc,
+}) => {
   const editorRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => {
     if (editorRef.current === null) return;
     const view = new EditorView({
-      state,
+      state: EditorState.create({
+        doc,
+        extensions,
+      }),
       parent: editorRef.current,
     });
     setView(view);
@@ -27,6 +29,6 @@ export const Editor: React.FunctionComponent<EditorProps> = ({ setView }) => {
       view.destroy();
       setView(null);
     };
-  }, [editorRef.current]);
+  }, [editorRef.current, doc]);
   return <section ref={editorRef} />;
 };
