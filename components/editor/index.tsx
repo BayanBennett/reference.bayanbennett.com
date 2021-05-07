@@ -17,11 +17,12 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
 
   React.useEffect(() => {
     if (editorRef.current === null) return;
+    const state = EditorState.create({
+      doc,
+      extensions,
+    });
     const view = new EditorView({
-      state: EditorState.create({
-        doc,
-        extensions,
-      }),
+      state,
       parent: editorRef.current,
     });
     setView(view);

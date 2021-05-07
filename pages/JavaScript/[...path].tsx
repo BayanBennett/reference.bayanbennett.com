@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import { resolve } from "path";
 import globby from "globby";
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import React, { FunctionComponent } from "react";
 import { EditorView } from "@codemirror/view";
 import { Box, Fab, Paper, Typography } from "@material-ui/core";
@@ -14,7 +14,7 @@ type JavaScriptPageTemplateProps = { initialCode: string; path: string[] };
 
 const cwd = resolve("data", "JavaScript");
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const filePaths = await globby("**/*", {
     onlyFiles: true,
     cwd,
