@@ -11,7 +11,7 @@ type HeadingComponentWithId = (
   props: ReactBaseProps &
     ReactMarkdownProps & {
       level: number;
-      id: string | undefined;
+      id?: string;
     }
 ) => ReactNode;
 
