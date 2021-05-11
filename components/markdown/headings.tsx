@@ -1,29 +1,33 @@
-import { HeadingComponent } from "react-markdown/src/ast-to-react";
-import { Typography } from "@material-ui/core";
 import React from "react";
+import {
+  ReactBaseProps,
+  ReactMarkdownProps,
+  ReactNode,
+} from "react-markdown/src/ast-to-react";
+import { Typography } from "@material-ui/core";
+import { Variant } from "@material-ui/core/styles/createTypography";
 
-export const h1: HeadingComponent = ({ children }) => (
-  <Typography variant="h1" align="center">
-    {children}
-  </Typography>
-);
+type HeadingComponentWithId = (
+  props: ReactBaseProps &
+    ReactMarkdownProps & {
+      level: number;
+      id: string | undefined;
+    }
+) => ReactNode;
 
-export const h2: HeadingComponent = ({ children }) => (
-  <Typography variant="h2">{children}</Typography>
-);
+const Heading: HeadingComponentWithId = ({ children, id, level }) => {
+  const variant = `h${Math.min(level, 6)}` as Variant;
+  const align = level === 1 ? "center" : undefined;
+  return (
+    <Typography id={id} variant={variant} align={align}>
+      {children}
+    </Typography>
+  );
+};
 
-export const h3: HeadingComponent = ({ children }) => (
-  <Typography variant="h3">{children}</Typography>
-);
-
-export const h4: HeadingComponent = ({ children }) => (
-  <Typography variant="h4">{children}</Typography>
-);
-
-export const h5: HeadingComponent = ({ children }) => (
-  <Typography variant="h5">{children}</Typography>
-);
-
-export const h6: HeadingComponent = ({ children }) => (
-  <Typography variant="h6">{children}</Typography>
-);
+export const h1 = Heading;
+export const h2 = Heading;
+export const h3 = Heading;
+export const h4 = Heading;
+export const h5 = Heading;
+export const h6 = Heading;

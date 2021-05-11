@@ -4,6 +4,8 @@ import globby from "globby";
 import { GetStaticPaths, GetStaticProps } from "next";
 import React, { FunctionComponent } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import * as markdownComponents from "../../components/markdown";
 
 type JavaScriptPageTemplateProps = {
@@ -46,7 +48,12 @@ const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> = (
   path,
 }) => {
   return (
-    <ReactMarkdown components={markdownComponents}>{markdown}</ReactMarkdown>
+    <ReactMarkdown
+      rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
+      components={markdownComponents}
+    >
+      {markdown}
+    </ReactMarkdown>
   );
 };
 
