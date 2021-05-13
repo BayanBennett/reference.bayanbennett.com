@@ -13,7 +13,7 @@ type JavaScriptPageTemplateProps = {
   path: string[];
 };
 
-const cwd = resolve("data", "JavaScript");
+const cwd = resolve("src", "data", "JavaScript");
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const filePaths = await globby("**/*.md", {
