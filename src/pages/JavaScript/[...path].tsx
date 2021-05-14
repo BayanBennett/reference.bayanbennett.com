@@ -49,7 +49,10 @@ const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> = (
 }) => {
   return (
     <ReactMarkdown
-      rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
+      rehypePlugins={[
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: "wrap" }],
+      ]}
       components={markdownComponents}
     >
       {markdown}
