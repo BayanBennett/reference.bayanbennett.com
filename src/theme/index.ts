@@ -1,6 +1,6 @@
-import { darkScrollbar, colors, createMuiTheme } from "@material-ui/core";
+import { darkScrollbar, colors, createTheme } from "@material-ui/core";
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     mode: "dark",
     primary: colors.blueGrey,
@@ -13,6 +13,7 @@ export const theme = createMuiTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
+        // @ts-ignore
         body: darkScrollbar(),
       },
     },
