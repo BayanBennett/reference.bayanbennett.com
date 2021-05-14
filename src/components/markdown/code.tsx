@@ -1,16 +1,18 @@
 import { SxProps } from "@material-ui/system";
 import objectInspect from "object-inspect";
 import { CodeComponent } from "react-markdown/src/ast-to-react";
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { EditorView } from "@codemirror/view";
-import { Box, Fab, Paper } from "@material-ui/core";
+import { Box, Fab, Paper, Typography } from "@material-ui/core";
 import { Editor } from "../editor";
 import { PlayArrow } from "@material-ui/icons";
+import { useCodeRunner, withCodeRunner } from "../../contexts/code-runner";
 
 const fabStyle: SxProps = {
   position: "absolute",
   bottom: 0,
   right: 0,
+  margin: 1,
 };
 
 const reduceArgs = (formattedList: any[], arg: any) => [
@@ -20,35 +22,19 @@ const reduceArgs = (formattedList: any[], arg: any) => [
 
 const formatArgs = (args: any[]) => args.reduce(reduceArgs, []).join(" ");
 
-export const code: CodeComponent = ({ inline = false, children }) => {
+const Code: CodeComponent = ({ inline = false, children }) => {
   const [view, setView] = React.useState<EditorView | null>(null);
-  const [result, setResult] = React.useState("");
+  const [result, setResult] = React.useState([]);
   const [error, setError] = React.useState("");
 
+  const sendMessage = useCodeRunner();
+
   if (inline) return <code>{children}</code>;
-
-  console.log = new Proxy(console.log, {
-    apply(target, self, args) {
-      setResult(formatArgs(args));
-      target(...args);
-    },
-  });
-
-  console.error = new Proxy(console.error, {
-    apply(target, self, args) {
-      setError(formatArgs(args));
-      target(...args);
-    },
-  });
 
   const evaluateCode = () => {
     if (view === null) return;
     const code = view.state.doc.toString();
-    try {
-      new Function(code)();
-    } catch (e) {
-      console.error(e);
-    }
+    sendMessage(code).then(setResult).catch(setError);
   };
 
   return (
@@ -60,12 +46,32 @@ export const code: CodeComponent = ({ inline = false, children }) => {
         </Fab>
       </Box>
       <Box
-        component="code"
-        sx={{ flex: 1, backgroundColor: "rgba(0,0,0,0.1)" }}
+        component="aside"
+        sx={{
+          flex: 1,
+          padding: 1,
+          overflow: "auto",
+          backgroundColor: "rgba(0,0,0,0.1)",
+          display: "flex",
+          flexFlow: "column nowrap",
+        }}
       >
-        {result}
+        {result.map(({ level, argArray }, index) => (
+          <Typography
+            key={index}
+            component="code"
+            variant="caption"
+            sx={{ fontFamily: "monospace" }}
+          >
+            {level === "assert" && argArray[0] === true
+              ? "✔️"
+              : formatArgs(argArray)}
+          </Typography>
+        ))}
         {error}
       </Box>
     </Box>
   );
 };
+
+export const code = withCodeRunner(Code as FunctionComponent);

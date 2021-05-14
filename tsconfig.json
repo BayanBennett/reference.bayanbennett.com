@@ -5,9 +5,10 @@
     "module": "ESNext",
     "sourceMap": true,
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "DOM",
+      "DOM.iterable",
+      "ESNext",
+      "WebWorker"
     ],
     "allowJs": true,
     "noEmit": true,
