@@ -1,27 +1,25 @@
-type Message = {
-  level: string | symbol;
+type ConsoleKeys = keyof Console;
+
+export type Message = {
+  level: ConsoleKeys;
   argArray: any[];
 };
 
 let messages: Message[] = [];
 
-type ConsoleMethods = Console[keyof Console];
+type ConsoleMethods = Console[ConsoleKeys];
 
 type CreateApply = (
-  level: string | symbol
+  level: ConsoleKeys
 ) => ProxyHandler<ConsoleMethods>["apply"];
 
-const createApply: CreateApply = (level: string | symbol) => (
-  target,
-  thisArg,
-  argArray
-) => {
+const createApply: CreateApply = (level) => (target, thisArg, argArray) => {
   messages.push({ level, argArray });
   return target.apply(thisArg, argArray);
 };
 
-const get: ProxyHandler<Console>["get"] = (target, prop) =>
-  new Proxy(target[prop as keyof Console], {
+const get: ProxyHandler<Console>["get"] = (target, prop: ConsoleKeys) =>
+  new Proxy(target[prop], {
     apply: createApply(prop),
   });
 
@@ -32,5 +30,3 @@ self.onmessage = ({ data }: { data: string }) => {
   self.postMessage(messages);
   messages = [];
 };
-
-export {};

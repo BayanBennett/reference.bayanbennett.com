@@ -7,15 +7,18 @@ import React, {
   useState,
 } from "react";
 
+import { Message } from "./code-runner.worker";
+
+type CodeRunnerContextType = (code: string) => Promise<Message[]>;
+
 const initialContext = async () => {
   throw new Error(
     '"useCodeRunner" must be inside a component wrapped with "withCodeRunner"'
   );
 };
 
-const CodeRunnerContext = createContext<(code: string) => Promise<any>>(
-  initialContext
-);
+const CodeRunnerContext =
+  createContext<(code: string) => Promise<any>>(initialContext);
 CodeRunnerContext.displayName = "CodeRunner";
 
 export const useCodeRunner = () => useContext(CodeRunnerContext);
