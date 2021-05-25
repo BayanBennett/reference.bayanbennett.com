@@ -34,9 +34,12 @@
     "typescript": "^4.2.3"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@types/node": "^14.14.37",
     "@types/object-inspect": "^1.8.0",
     "@types/react": "^17.0.3",
-    "prettier": "^2.2.1"
+    "jest": "^27.0.1",
+    "prettier": "^2.2.1",
+    "ts-jest": "^27.0.0"
   }
 }
