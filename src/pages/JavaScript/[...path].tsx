@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { resolve } from "path";
+import { resolve, sep } from "path";
 import globby from "globby";
 import { GetStaticPaths, GetStaticProps } from "next";
 import React, { FunctionComponent } from "react";
@@ -15,21 +15,25 @@ type JavaScriptPageTemplateProps = {
 
 const cwd = resolve("src", "data", "JavaScript");
 
-export const getStaticPaths: GetStaticPaths = async () => {
+type PathResult = { path: string[] };
+
+export const getStaticPaths: GetStaticPaths<PathResult> = async () => {
   const filePaths = await globby("**/*.md", {
     onlyFiles: true,
     cwd,
   });
   const paths = filePaths.map((filePath) => {
     const filePathWithoutExtension = filePath.replace(/\.md$/, "");
-    return `/JavaScript/${filePathWithoutExtension}`;
+    return {
+      params: { path: filePathWithoutExtension.split(sep) },
+    };
   });
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<
   JavaScriptPageTemplateProps,
-  { path: string[] }
+  PathResult
 > = async ({ params }) => {
   if (typeof params?.path === "undefined") return { notFound: true };
   const { path } = params;
@@ -43,21 +47,19 @@ export const getStaticProps: GetStaticProps<
   return { props: { markdown, path } };
 };
 
-const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> = ({
-  markdown,
-  path,
-}) => {
-  return (
-    <ReactMarkdown
-      rehypePlugins={[
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: "wrap" }],
-      ]}
-      components={markdownComponents}
-    >
-      {markdown}
-    </ReactMarkdown>
-  );
-};
+const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> =
+  ({ markdown, path }) => {
+    return (
+      <ReactMarkdown
+        rehypePlugins={[
+          rehypeSlug,
+          [rehypeAutolinkHeadings, { behavior: "wrap" }],
+        ]}
+        components={markdownComponents}
+      >
+        {markdown}
+      </ReactMarkdown>
+    );
+  };
 
 export default JavaScriptPageTemplate;
