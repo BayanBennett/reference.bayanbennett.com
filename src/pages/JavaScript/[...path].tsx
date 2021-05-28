@@ -7,27 +7,33 @@ import ReactMarkdown from "react-markdown";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import * as markdownComponents from "../../components/markdown";
+import { pathArraysToTree } from "../../components/path-tree/util";
+import { PathTree, PathTreeNode } from "../../components/path-tree";
 
 type JavaScriptPageTemplateProps = {
   markdown: string;
   path: string[];
+  pathTree: PathTreeNode;
 };
 
 const cwd = resolve("src", "data", "JavaScript");
 
 type PathResult = { path: string[] };
 
+const pathArraysPromise = globby("**/*.md", {
+  onlyFiles: true,
+  cwd,
+}).then((paths) => paths.map((path) => path.replace(/\.md$/, "").split(sep)));
+
+const pathTreePromise = pathArraysPromise.then((pathArrays) =>
+  pathArraysToTree(pathArrays)
+);
+
 export const getStaticPaths: GetStaticPaths<PathResult> = async () => {
-  const filePaths = await globby("**/*.md", {
-    onlyFiles: true,
-    cwd,
-  });
-  const paths = filePaths.map((filePath) => {
-    const filePathWithoutExtension = filePath.replace(/\.md$/, "");
-    return {
-      params: { path: filePathWithoutExtension.split(sep) },
-    };
-  });
+  const filePaths = await pathArraysPromise;
+
+  const paths = filePaths.map((path) => ({ params: { path } }));
+
   return { paths, fallback: false };
 };
 
@@ -43,13 +49,14 @@ export const getStaticProps: GetStaticProps<
     resolve(cwd, ...folder, `${fileName}.md`),
     "utf-8"
   );
+  const pathTree = await pathTreePromise;
 
-  return { props: { markdown, path } };
+  return { props: { markdown, path, pathTree } };
 };
 
 const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> =
-  ({ markdown, path }) => {
-    return (
+  ({ markdown, path, pathTree }) => (
+    <>
       <ReactMarkdown
         rehypePlugins={[
           rehypeSlug,
@@ -59,7 +66,8 @@ const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> =
       >
         {markdown}
       </ReactMarkdown>
-    );
-  };
+      <PathTree currentPath={["/JavaScript", ...path]} pathTree={pathTree} />
+    </>
+  );
 
 export default JavaScriptPageTemplate;
