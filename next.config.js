@@ -3,13 +3,12 @@ module.exports = {
     webpack5: true,
   },
   reactStrictMode: true,
-  webpack: (config, { isServer, dev }) => {
-    const chunkFileName = dev ? "[name].js" : "[name].[fullhash].js";
-
-    config.output.chunkFilename = isServer
-      ? chunkFileName
-      : `static/chunks/${chunkFileName}`;
-
+  webpack: (config) => {
+    config.output.hotUpdateMainFilename =
+      config.output.hotUpdateMainFilename.replace(
+        "[fullhash].hot-update.json",
+        "[runtime].[fullhash].hot-update.json"
+      );
     return config;
   },
 };
