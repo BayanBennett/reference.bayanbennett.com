@@ -61,7 +61,12 @@ const createContentComponent: CreateContentComponent = ({ href }) =>
             {icon}
           </div>
           <Link href={href} passHref={true}>
-            <MUILink onClick={handleSelection} ref={ref} sx={{ flexGrow: 1 }}>
+            <MUILink
+              variant="h6"
+              onClick={handleSelection}
+              ref={ref}
+              sx={{ flexGrow: 1 }}
+            >
               {label}
             </MUILink>
           </Link>
