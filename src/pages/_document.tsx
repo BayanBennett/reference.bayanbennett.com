@@ -1,17 +1,24 @@
 import * as React from "react";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";
-import createEmotionServer from "@emotion/server/create-instance";
 import { theme } from "../theme";
+import {
+  withEmotionCache,
+  extractCriticalToChunks,
+} from "../contexts/emotion-cache";
+import globby from "globby";
+import { resolve, sep } from "path";
+import { pathArraysToTree } from "../components/path-tree/util";
+import { GetStaticPaths } from "next";
 
-const getCache = () => {
-  const cache = createCache({ key: "css", prepend: true });
-  cache.compat = true;
+const cwd = resolve("src", "data", "JavaScript");
 
-  return cache;
-};
+const pathTreePromise = globby("**/*.md", {
+  onlyFiles: true,
+  cwd,
+})
+  .then((paths) => paths.map((path) => path.replace(/\.md$/, "").split(sep)))
+  .then((pathArrays) => pathArraysToTree(pathArrays));
 
 export default class extends Document {
   render() {
@@ -34,22 +41,17 @@ export default class extends Document {
 
   static getInitialProps: typeof Document.getInitialProps = async (ctx) => {
     const sheets = new ServerStyleSheets();
-    const cache = getCache();
-    const { extractCriticalToChunks } = createEmotionServer(cache);
 
     ctx.renderPage = new Proxy(ctx.renderPage, {
       apply: (target) =>
         target({
           enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-          enhanceComponent: (Component) => (props) => (
-            <CacheProvider value={cache}>
-              <Component {...props} />
-            </CacheProvider>
-          ),
+          enhanceComponent: withEmotionCache,
         }),
     });
 
     const initialProps = await Document.getInitialProps(ctx);
+    const pathTree = await pathTreePromise;
     const emotionStyles = extractCriticalToChunks(initialProps.html);
     const emotionStyleTags = emotionStyles.styles.map((style) => (
       <style
@@ -62,6 +64,7 @@ export default class extends Document {
 
     return {
       ...initialProps,
+      pathTree,
       styles: [
         ...React.Children.toArray(initialProps.styles),
         sheets.getStyleElement(),

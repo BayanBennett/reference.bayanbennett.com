@@ -8,7 +8,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import * as markdownComponents from "../../components/markdown";
 import { pathArraysToTree } from "../../components/path-tree/util";
-import { PathTree, PathTreeNode } from "../../components/path-tree";
+import { PathTreeNode } from "../../components/path-tree";
 
 type JavaScriptPageTemplateProps = {
   markdown: string;
@@ -51,11 +51,11 @@ export const getStaticProps: GetStaticProps<
   );
   const pathTree = await pathTreePromise;
 
-  return { props: { markdown, path, pathTree } };
+  return { props: { markdown, path: ["/JavaScript", ...path], pathTree } };
 };
 
 const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> =
-  ({ markdown, path, pathTree }) => (
+  ({ markdown }) => (
     <>
       <ReactMarkdown
         rehypePlugins={[
@@ -66,7 +66,6 @@ const JavaScriptPageTemplate: FunctionComponent<JavaScriptPageTemplateProps> =
       >
         {markdown}
       </ReactMarkdown>
-      <PathTree currentPath={["/JavaScript", ...path]} pathTree={pathTree} />
     </>
   );
 

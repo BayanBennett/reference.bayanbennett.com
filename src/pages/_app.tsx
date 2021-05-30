@@ -1,38 +1,34 @@
-import React, { useEffect } from "react";
+import React, { ComponentType } from "react";
 import Head from "next/head";
-import { AppProps } from "next/app";
-import { ThemeProvider } from "@material-ui/styles";
-import { CacheProvider } from "@emotion/react";
-import { CssBaseline } from "@material-ui/core";
-import createCache from "@emotion/cache";
-import { theme } from "../theme";
-import { Layout } from "../layout";
+import App, { AppContext } from "next/app";
+import { withTheme } from "../theme";
+import { withLayout } from "../layout";
+import { withEmotionCache } from "../contexts/emotion-cache";
+import { withPageProps } from "../contexts/page-props";
 
-export const cache = createCache({ key: "css", prepend: true });
+type WithHead = <T>(Component: ComponentType<T>) => ComponentType<T>;
 
-const _App = (props: AppProps) => {
-  const { Component, pageProps } = props;
-
-  useEffect(() => {
-    const jssStyles = document.querySelector("#jss-server-side");
-    if (jssStyles) {
-      jssStyles.parentElement!.removeChild(jssStyles);
-    }
-  }, []);
-  return (
-    <CacheProvider value={cache}>
+const withHead: WithHead = (Component) => (props) =>
+  (
+    <>
       <Head>
         <title>My page</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
-    </CacheProvider>
+      <Component {...props} />
+    </>
   );
-};
 
-export default _App;
+export default class extends App<{}, {}, {}> {
+  render() {
+    const { Component, pageProps } = this.props;
+    const WrappedComponent = [
+      withEmotionCache,
+      withPageProps,
+      withTheme,
+      withHead,
+      withLayout,
+    ].reduceRight((Child, withHoc) => withHoc(Child), Component);
+    return <WrappedComponent {...pageProps} />;
+  }
+}
