@@ -1,20 +1,15 @@
 import React, {
-  FunctionComponent,
   SyntheticEvent,
   useEffect,
   useState,
+  VoidFunctionComponent,
 } from "react";
 import { TreeView } from "@material-ui/lab";
-import { PathTreeNode } from "./types";
 import { PathTreeItem } from "./path-tree-item";
 import { useRouter } from "next/router";
+import { usePageProps } from "../../contexts/page-props";
 
 export * from "./types";
-
-type PathTreeProps = {
-  currentPath: string[];
-  pathTree: PathTreeNode;
-};
 
 const createExpanded = (path: string[]) =>
   path.reduce<string[]>(
@@ -25,10 +20,8 @@ const createExpanded = (path: string[]) =>
     []
   );
 
-export const PathTree: FunctionComponent<PathTreeProps> = ({
-  currentPath,
-  pathTree,
-}) => {
+export const PathTree: VoidFunctionComponent = () => {
+  const { path: currentPath = [], pathTree } = usePageProps();
   const [expanded, setExpanded] = useState(createExpanded(currentPath));
   const [selected, setSelected] = useState(currentPath.join("/"));
   const router = useRouter();
@@ -43,7 +36,7 @@ export const PathTree: FunctionComponent<PathTreeProps> = ({
   const handleToggle = (_: SyntheticEvent, nodeIds: string[]) =>
     setExpanded(nodeIds);
 
-  return (
+  return typeof pathTree !== "undefined" ? (
     <TreeView
       defaultCollapseIcon="➖"
       defaultExpandIcon="➕"
@@ -54,5 +47,5 @@ export const PathTree: FunctionComponent<PathTreeProps> = ({
     >
       <PathTreeItem path={[currentPath[0]]} nodeChildren={pathTree.children} />
     </TreeView>
-  );
+  ) : null;
 };
