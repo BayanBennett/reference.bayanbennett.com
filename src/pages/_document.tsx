@@ -9,7 +9,6 @@ import {
 import globby from "globby";
 import { resolve, sep } from "path";
 import { pathArraysToTree } from "../components/path-tree/util";
-import { GetStaticPaths } from "next";
 
 const cwd = resolve("src", "data", "JavaScript");
 
