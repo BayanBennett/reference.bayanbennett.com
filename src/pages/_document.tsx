@@ -30,6 +30,11 @@ export default class extends Document {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <script
+            data-ad-client="ca-pub-8946662180194573"
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          />
+          <script
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-Z4EFX395RV"
           />
