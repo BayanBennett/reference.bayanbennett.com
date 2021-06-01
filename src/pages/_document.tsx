@@ -29,6 +29,20 @@ export default class extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Z4EFX395RV"
+          />
+          <script>
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)}
+            gtag('js', new Date());
+
+            gtag('config', 'G-Z4EFX395RV')
+            `}
+            ;
+          </script>
         </Head>
         <body>
           <Main />
