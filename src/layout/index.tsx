@@ -16,7 +16,7 @@ export const Layout: FunctionComponent = ({ children }) => (
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
-        <Link href="/">
+        <Link href="/" passHref={true}>
           <Button startIcon={<Typography variant="h6">📚</Typography>}>
             <Typography color="text.primary" variant="h6">
               Reference
