@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { TreeDrawer } from "./tree-drawer";
+import Link from "next/link";
 
 export const Layout: FunctionComponent = ({ children }) => (
   <>
@@ -15,11 +16,13 @@ export const Layout: FunctionComponent = ({ children }) => (
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
-        <Button startIcon={<Typography variant="h6">📚</Typography>}>
-          <Typography color="text.primary" variant="h6">
-            Reference
-          </Typography>
-        </Button>
+        <Link href="/">
+          <Button startIcon={<Typography variant="h6">📚</Typography>}>
+            <Typography color="text.primary" variant="h6">
+              Reference
+            </Typography>
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
     <main style={{ position: "relative" }}>
