@@ -24,7 +24,6 @@ export const getStaticProps: GetStaticProps<JavaScriptPageProps> = async () => {
 
 const JavaScriptPage: VoidFunctionComponent<JavaScriptPageProps> = () => {
   const { recentUpdates } = usePageProps();
-  console.log(recentUpdates);
   return (
     <>
       <Typography align="center" variant="h1">
