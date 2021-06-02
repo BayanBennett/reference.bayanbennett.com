@@ -3,7 +3,7 @@ import objectInspect from "object-inspect";
 import { CodeComponent } from "react-markdown/src/ast-to-react";
 import React, { FunctionComponent } from "react";
 import { EditorView } from "@codemirror/view";
-import { Box, Fab, Paper, Typography } from "@material-ui/core";
+import { Box, Fab, Grid, Paper, Typography } from "@material-ui/core";
 import { Editor } from "../editor";
 import { PlayArrow } from "@material-ui/icons";
 import { useCodeRunner, withCodeRunner } from "../../contexts/code-runner";
@@ -38,17 +38,19 @@ const Code: CodeComponent = ({ inline = false, children }) => {
   };
 
   return (
-    <Box component={Paper} sx={{ display: "flex", flexDirection: "row" }}>
-      <Box sx={{ position: "relative", flex: 2 }}>
+    <Grid container component={Paper}>
+      <Grid item xs={12} md={8} sx={{ position: "relative" }}>
         <Editor setView={setView} initialCode={String(children)} />
         <Fab size="small" sx={fabStyle} onClick={evaluateCode}>
           <PlayArrow />
         </Fab>
-      </Box>
-      <Box
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        md={4}
         component="aside"
         sx={{
-          flex: 1,
           padding: 1,
           overflow: "auto",
           backgroundColor: "rgba(0,0,0,0.1)",
@@ -69,8 +71,8 @@ const Code: CodeComponent = ({ inline = false, children }) => {
           </Typography>
         ))}
         {error}
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
