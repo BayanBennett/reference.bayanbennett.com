@@ -8,6 +8,9 @@ import { TreeView } from "@material-ui/lab";
 import { PathTreeItem } from "./path-tree-item";
 import { useRouter } from "next/router";
 import { usePageProps } from "../../contexts/page-props";
+import { Button } from "@material-ui/core";
+import { IconJavaScript } from "../icons/javascript";
+import Link from "next/link";
 
 export * from "./types";
 
@@ -37,15 +40,28 @@ export const PathTree: VoidFunctionComponent = () => {
     setExpanded(nodeIds);
 
   return typeof pathTree !== "undefined" ? (
-    <TreeView
-      defaultCollapseIcon="➖"
-      defaultExpandIcon="➕"
-      expanded={expanded}
-      selected={selected}
-      onNodeToggle={handleToggle}
-      onNodeSelect={handleSelect}
-    >
-      <PathTreeItem path={[currentPath[0]]} nodeChildren={pathTree.children} />
-    </TreeView>
+    <>
+      <Link href="/JavaScript" passHref={true}>
+        <Button
+          variant="contained"
+          startIcon={<IconJavaScript fontSize="large" />}
+        >
+          JavaScript
+        </Button>
+      </Link>
+      <TreeView
+        defaultCollapseIcon="➖"
+        defaultExpandIcon="➕"
+        expanded={expanded}
+        selected={selected}
+        onNodeToggle={handleToggle}
+        onNodeSelect={handleSelect}
+      >
+        <PathTreeItem
+          path={[currentPath[0]]}
+          nodeChildren={pathTree.children}
+        />
+      </TreeView>
+    </>
   ) : null;
 };
