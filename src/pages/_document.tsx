@@ -6,18 +6,6 @@ import {
   withEmotionCache,
   extractCriticalToChunks,
 } from "../contexts/emotion-cache";
-import globby from "globby";
-import { resolve, sep } from "path";
-import { pathArraysToTree } from "../components/path-tree/util";
-
-const cwd = resolve("src", "data", "JavaScript");
-
-const pathTreePromise = globby("**/*.md", {
-  onlyFiles: true,
-  cwd,
-})
-  .then((paths) => paths.map((path) => path.replace(/\.md$/, "").split(sep)))
-  .then((pathArrays) => pathArraysToTree(pathArrays));
 
 export default class extends Document {
   render() {
@@ -70,20 +58,17 @@ export default class extends Document {
     });
 
     const initialProps = await Document.getInitialProps(ctx);
-    const pathTree = await pathTreePromise;
     const emotionStyles = extractCriticalToChunks(initialProps.html);
     const emotionStyleTags = emotionStyles.styles.map((style) => (
       <style
         data-emotion={`${style.key} ${style.ids.join(" ")}`}
         key={style.key}
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: style.css }}
       />
     ));
 
     return {
       ...initialProps,
-      pathTree,
       styles: [
         ...React.Children.toArray(initialProps.styles),
         sheets.getStyleElement(),
