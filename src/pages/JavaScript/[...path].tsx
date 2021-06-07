@@ -1,6 +1,3 @@
-import { promises as fs } from "fs";
-import { resolve, sep } from "path";
-import globby from "globby";
 import { GetStaticPaths, GetStaticProps } from "next";
 import React, { VoidFunctionComponent } from "react";
 import ReactMarkdown from "react-markdown";

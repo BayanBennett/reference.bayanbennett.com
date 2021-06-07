@@ -4,5 +4,3 @@ export type PathTreeNode = {
     [k: string]: PathTreeNode;
   };
 };
-
-export class BayanBennett {}
