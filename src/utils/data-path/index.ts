@@ -1,7 +1,8 @@
 import globby from "globby";
-import { resolve, sep } from "path";
+import { resolve, sep, join } from "path";
 import { pathArraysToTree } from "../../components/path-tree/util";
 import { Dirent, promises as fs } from "fs";
+import vfile, { VFile } from "vfile";
 
 const cwd = resolve("src", "data", "JavaScript");
 
@@ -21,10 +22,16 @@ const pathTreePromise = pathArraysPromise.then((pathArrays) =>
   pathArraysToTree(pathArrays)
 );
 
-export const readMarkdownFile = async (path: string[]) => {
+type ReadMarkdownFile = (path: string[]) => Promise<VFile>;
+
+export const readMarkdownFile: ReadMarkdownFile = async (path) => {
   const fileName = path[path.length - 1];
   const folder = path.slice(0, path.length - 1);
-  return fs.readFile(resolve(cwd, ...folder, `${fileName}.md`), "utf-8");
+  const file = await fs.readFile(
+    resolve(cwd, ...folder, `${fileName}.md`),
+    "utf-8"
+  );
+  return vfile(file);
 };
 
 export type RecentUpdate = {
