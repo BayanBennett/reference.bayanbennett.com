@@ -2,13 +2,12 @@ import {
   Box,
   BoxProps,
   Card,
-  CardContent,
   CardHeader,
   Paper,
   Typography,
 } from "@material-ui/core";
 import { IconJavaScript } from "./icons/javascript";
-import React, { VoidFunctionComponent } from "react";
+import React, { ReactElement, VoidFunctionComponent } from "react";
 import { RecentUpdate } from "../utils/data-path";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -18,6 +17,10 @@ dayjs.extend(relativeTime);
 
 type RecentUpdatesProps = BoxProps & {
   recentUpdates: RecentUpdate[];
+};
+
+const iconMap: Record<string, ReactElement> = {
+  JavaScript: <IconJavaScript />,
 };
 
 const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
@@ -30,8 +33,8 @@ const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
       sx={{ flex: "0 0 15rem", margin: 1, cursor: "pointer" }}
     >
       <CardHeader
-        avatar={<IconJavaScript />}
-        title={pathArray.join(" ")}
+        avatar={iconMap[pathArray[0]]}
+        title={pathArray.slice(1).join(" ")}
         subheader={dayjs(modified).fromNow()}
       />
     </Card>
