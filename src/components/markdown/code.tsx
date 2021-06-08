@@ -3,9 +3,8 @@ import objectInspect from "object-inspect";
 import { CodeComponent } from "react-markdown/src/ast-to-react";
 import React, { FunctionComponent } from "react";
 import { EditorView } from "@codemirror/view";
-import { Box, Fab, Grid, Paper, Typography } from "@material-ui/core";
+import { Fab, Grid, Paper, Typography } from "@material-ui/core";
 import { Editor } from "../editor";
-import { PlayArrow } from "@material-ui/icons";
 import { useCodeRunner, withCodeRunner } from "../../contexts/code-runner";
 
 const fabStyle: SxProps = {
@@ -13,6 +12,7 @@ const fabStyle: SxProps = {
   bottom: 0,
   right: 0,
   margin: 1,
+  fontFamily: "monospace",
 };
 
 const reduceArgs = (formattedList: any[], arg: any) => [
@@ -42,7 +42,7 @@ const Code: CodeComponent = ({ inline = false, children }) => {
       <Grid item xs={12} md={8} sx={{ position: "relative" }}>
         <Editor setView={setView} initialCode={String(children)} />
         <Fab size="small" sx={fabStyle} onClick={evaluateCode}>
-          <PlayArrow />
+          <Typography align="center">▶</Typography>
         </Fab>
       </Grid>
       <Grid
