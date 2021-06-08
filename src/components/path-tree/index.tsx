@@ -40,28 +40,15 @@ export const PathTree: VoidFunctionComponent = () => {
     setExpanded(nodeIds);
 
   return typeof pathTree !== "undefined" ? (
-    <>
-      <Link href="/JavaScript" passHref={true}>
-        <Button
-          variant="contained"
-          startIcon={<IconJavaScript fontSize="large" />}
-        >
-          JavaScript
-        </Button>
-      </Link>
-      <TreeView
-        defaultCollapseIcon="➖"
-        defaultExpandIcon="➕"
-        expanded={expanded}
-        selected={selected}
-        onNodeToggle={handleToggle}
-        onNodeSelect={handleSelect}
-      >
-        <PathTreeItem
-          path={[currentPath[0]]}
-          nodeChildren={pathTree.children}
-        />
-      </TreeView>
-    </>
+    <TreeView
+      defaultCollapseIcon="➖"
+      defaultExpandIcon="➕"
+      expanded={expanded}
+      selected={selected}
+      onNodeToggle={handleToggle}
+      onNodeSelect={handleSelect}
+    >
+      <PathTreeItem path={[]} nodeChildren={pathTree.children} />
+    </TreeView>
   ) : null;
 };

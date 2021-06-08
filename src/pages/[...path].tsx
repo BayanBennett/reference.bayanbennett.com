@@ -11,13 +11,13 @@ import { hastChildrenToReact, Root } from "react-markdown/src/ast-to-react";
 // @ts-ignore
 import { html } from "property-information";
 
-import * as components from "../../components/markdown";
-import { PathTreeNode } from "../../components/path-tree";
+import * as components from "../components/markdown";
+import { PathTreeNode } from "../components/path-tree";
 import {
   getPathArrays,
   getPathTree,
   readMarkdownFile,
-} from "../../utils/data-path";
+} from "../utils/data-path";
 import { Chip, Typography } from "@material-ui/core";
 
 type Frontmatter = {
@@ -46,7 +46,7 @@ const processor = unified()
 
 export const getStaticPaths: GetStaticPaths<PathResult> = async () => {
   const filePaths = await getPathArrays();
-
+  console.log({ filePaths });
   const paths = filePaths.map((path) => ({ params: { path } }));
 
   return { paths, fallback: false };
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps<
     props: {
       hast,
       frontmatter,
-      path: ["/JavaScript", ...path],
+      path,
       pathTree,
     },
   };

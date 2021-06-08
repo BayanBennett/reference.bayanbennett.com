@@ -24,7 +24,7 @@ const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
   pathArray,
   modified,
 }) => (
-  <Link href={["/JavaScript", ...pathArray].join("/")} passHref={true}>
+  <Link href={`/${pathArray.join("/")}`} passHref={true}>
     <Card
       elevation={2}
       sx={{ flex: "0 0 15rem", margin: 1, cursor: "pointer" }}

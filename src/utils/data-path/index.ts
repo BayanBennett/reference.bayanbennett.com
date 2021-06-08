@@ -1,10 +1,10 @@
 import globby from "globby";
-import { resolve, sep, join } from "path";
+import { resolve, sep } from "path";
 import { pathArraysToTree } from "../../components/path-tree/util";
-import { Dirent, promises as fs } from "fs";
+import { promises as fs } from "fs";
 import vfile, { VFile } from "vfile";
 
-const cwd = resolve("src", "data", "JavaScript");
+const cwd = resolve("src", "data");
 
 const filePathsPromise = globby("**/*.md", {
   onlyFiles: true,

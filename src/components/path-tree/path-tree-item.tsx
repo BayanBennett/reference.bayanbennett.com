@@ -82,12 +82,13 @@ export const PathTreeItem: FunctionComponent<PathTreeItemProps> = ({
   <>
     {Object.entries(nodeChildren).map(([segment, node]) => {
       const path = [...parentPath, segment];
-      const href = path.join("/");
+      const nodeId = path.join("/");
+      const href = `/${nodeId}`;
       const ContentComponent = createContentComponent({ href });
       return (
         <TreeItem
-          key={href}
-          nodeId={href}
+          key={nodeId}
+          nodeId={nodeId}
           label={segment}
           ContentComponent={ContentComponent}
         >
