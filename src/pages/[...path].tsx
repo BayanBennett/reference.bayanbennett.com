@@ -46,7 +46,6 @@ const processor = unified()
 
 export const getStaticPaths: GetStaticPaths<PathResult> = async () => {
   const filePaths = await getPathArrays();
-  console.log({ filePaths });
   const paths = filePaths.map((path) => ({ params: { path } }));
 
   return { paths, fallback: false };
