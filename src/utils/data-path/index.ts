@@ -3,6 +3,10 @@ import { resolve, sep } from "path";
 import { pathArraysToTree } from "../../components/path-tree/util";
 import { promises as fs } from "fs";
 import vfile, { VFile } from "vfile";
+import {
+  unifiedRemarkProcessor,
+  Frontmatter,
+} from "../unified-remark-processor";
 
 const cwd = resolve("markdown-pages");
 
@@ -34,24 +38,45 @@ export const readMarkdownFile: ReadMarkdownFile = async (path) => {
   return vfile(file);
 };
 
-export type RecentUpdate = {
-  pathArray: string[];
-  modified: number;
+type FileMetadata = Frontmatter & {
+  filePath: string;
 };
 
-export const getRecentUpdates = async (): Promise<RecentUpdate[]> => {
-  const filePaths = await filePathsPromise;
-  const fileStatPromises = filePaths.map(async (filePath) => ({
-    filePath,
-    ...(await fs.stat(resolve(cwd, filePath))),
-  }));
-  const fileStats = await Promise.all(fileStatPromises);
-  fileStats.sort(({ mtimeMs: a }, { mtimeMs: b }) => b - a);
-  return fileStats.slice(0, 10).map(({ filePath, mtimeMs: modified }) => ({
-    pathArray: filePathToPathArray(filePath),
-    modified,
-  }));
+export type RecentUpdate = Frontmatter & {
+  pathArray: string[];
 };
+
+type GetFileMetadata = (filePath: string) => Promise<FileMetadata>;
+
+const getFileMetadata: GetFileMetadata = async (filePath) => {
+  const fileString = await fs.readFile(resolve(cwd, filePath), "utf-8");
+  const markdown = vfile(fileString);
+  await unifiedRemarkProcessor.run(
+    unifiedRemarkProcessor.parse(markdown),
+    markdown
+  );
+  const { frontmatter } = markdown.data as { frontmatter: Frontmatter };
+  return {
+    filePath,
+    ...frontmatter,
+  };
+};
+
+const recentUpdatesPromise: Promise<RecentUpdate[]> = filePathsPromise.then(
+  async (filePaths) => {
+    const fileMetadataPromises = filePaths.map(getFileMetadata);
+    const fileMetadata = await Promise.all(fileMetadataPromises);
+    fileMetadata.sort(
+      ({ modified: a }, { modified: b }) => Date.parse(b) - Date.parse(a)
+    );
+    return fileMetadata.slice(0, 10).map(({ filePath, ...metadata }) => ({
+      pathArray: filePathToPathArray(filePath),
+      ...metadata,
+    }));
+  }
+);
+
+export const getRecentUpdates = async () => recentUpdatesPromise;
 
 export const getPathArrays = async () => pathArraysPromise;
 

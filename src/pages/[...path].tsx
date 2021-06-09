@@ -2,10 +2,6 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import React, { VoidFunctionComponent } from "react";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkParseFrontmatter from "remark-parse-frontmatter";
-import unified from "unified";
-import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { hastChildrenToReact, Root } from "react-markdown/src/ast-to-react";
 // @ts-ignore
@@ -19,13 +15,10 @@ import {
   readMarkdownFile,
 } from "../utils/data-path";
 import { Chip, Typography } from "@material-ui/core";
-
-type Frontmatter = {
-  title: string;
-  created: string;
-  modified: string;
-  tags: string[];
-};
+import {
+  Frontmatter,
+  unifiedRemarkProcessor,
+} from "../utils/unified-remark-processor";
 
 type JavaScriptPageTemplateProps = {
   hast: Root;
@@ -36,10 +29,7 @@ type JavaScriptPageTemplateProps = {
 
 type PathResult = { path: string[] };
 
-const processor = unified()
-  .use(remarkParse)
-  .use(remarkFrontmatter)
-  .use(remarkParseFrontmatter)
+const processor = unifiedRemarkProcessor()
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" });
