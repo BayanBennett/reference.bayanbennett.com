@@ -5,8 +5,8 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/src/data" />
       <excludeFolder url="file://$MODULE_DIR$/.next" />
+      <excludeFolder url="file://$MODULE_DIR$/markdown-pages" />
       <excludePattern pattern="package-lock.json" />
     </content>
     <orderEntry type="inheritedJdk" />

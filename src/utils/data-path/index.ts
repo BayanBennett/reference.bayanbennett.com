@@ -4,7 +4,7 @@ import { pathArraysToTree } from "../../components/path-tree/util";
 import { promises as fs } from "fs";
 import vfile, { VFile } from "vfile";
 
-const cwd = resolve("src", "data");
+const cwd = resolve("markdown-pages");
 
 const filePathsPromise = globby("**/*.md", {
   onlyFiles: true,
