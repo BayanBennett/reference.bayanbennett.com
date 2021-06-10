@@ -1,4 +1,5 @@
 import React, { VoidFunctionComponent } from "react";
+import Head from "next/head";
 import { Typography } from "@material-ui/core";
 import { RecentUpdates } from "../components/recent-updates";
 import { GetStaticProps } from "next";
@@ -26,6 +27,9 @@ const JavaScriptPage: VoidFunctionComponent<JavaScriptPageProps> = () => {
   const { recentUpdates } = usePageProps();
   return (
     <>
+      <Head>
+        <title>JavaScript | 📚 Reference</title>
+      </Head>
       <Typography align="center" variant="h1">
         JavaScript
       </Typography>

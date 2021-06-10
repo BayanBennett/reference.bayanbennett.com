@@ -19,6 +19,7 @@ import {
   Frontmatter,
   unifiedRemarkProcessor,
 } from "../utils/unified-remark-processor";
+import Head from "next/head";
 
 type JavaScriptPageTemplateProps = {
   hast: Root;
@@ -68,7 +69,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 const JavaScriptPageTemplate: VoidFunctionComponent<JavaScriptPageTemplateProps> =
-  ({ hast, frontmatter }) => {
+  ({ hast, frontmatter, path }) => {
     const reactMarkdown = hastChildrenToReact(
       { options: { components }, schema: html, listDepth: 0 },
       hast
@@ -78,6 +79,11 @@ const JavaScriptPageTemplate: VoidFunctionComponent<JavaScriptPageTemplateProps>
 
     return (
       <>
+        <Head>
+          <title>
+            {title} | {path[0]} | 📚 Reference
+          </title>
+        </Head>
         <Typography variant="h1" align="center">
           {title}
         </Typography>
