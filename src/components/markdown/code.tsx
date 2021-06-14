@@ -37,6 +37,11 @@ const Code: CodeComponent = ({ inline = false, children }) => {
     sendMessage(code).then(setResult).catch(setError);
   };
 
+  const formatAssert = (argArray: [boolean, ...any[]]) => {
+    const [result, ...message] = argArray;
+    return result ? "✔️" : `❌ ${formatArgs(message)}`;
+  };
+
   return (
     <Grid container component={Paper}>
       <Grid item xs={12} md={8} sx={{ position: "relative" }}>
@@ -65,9 +70,7 @@ const Code: CodeComponent = ({ inline = false, children }) => {
             variant="caption"
             sx={{ fontFamily: "monospace" }}
           >
-            {level === "assert" && argArray[0] === true
-              ? "✔️"
-              : formatArgs(argArray)}
+            {level === "assert" ? formatAssert(argArray) : formatArgs(argArray)}
           </Typography>
         ))}
         {error}
