@@ -1,12 +1,12 @@
-import {
-  ComponentType,
-  createContext,
-  FunctionComponent,
-  useContext,
-} from "react";
+import { ComponentType, createContext, useContext } from "react";
 import { AppProps } from "next/app";
+import { RecentUpdate } from "../utils/data-path";
 
-const PagePropsContext = createContext<AppProps["pageProps"]>({});
+type PageProps = {
+  recentUpdates?: RecentUpdate[];
+};
+
+const PagePropsContext = createContext<PageProps>({});
 
 export const usePageProps = () => useContext(PagePropsContext);
 

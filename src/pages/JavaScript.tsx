@@ -23,19 +23,16 @@ export const getStaticProps: GetStaticProps<JavaScriptPageProps> = async () => {
   return { props: { path: ["JavaScript"], pathTree, recentUpdates } };
 };
 
-const JavaScriptPage: VoidFunctionComponent<JavaScriptPageProps> = () => {
-  const { recentUpdates } = usePageProps();
-  return (
-    <>
-      <Head>
-        <title>JavaScript | 📚 Reference</title>
-      </Head>
-      <Typography align="center" variant="h1">
-        JavaScript
-      </Typography>
-      <RecentUpdates recentUpdates={recentUpdates} />
-    </>
-  );
-};
+const JavaScriptPage: VoidFunctionComponent<JavaScriptPageProps> = () => (
+  <>
+    <Head>
+      <title>JavaScript | 📚 Reference</title>
+    </Head>
+    <Typography align="center" variant="h1">
+      JavaScript
+    </Typography>
+    <RecentUpdates />
+  </>
+);
 
 export default JavaScriptPage;

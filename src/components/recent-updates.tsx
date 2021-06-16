@@ -12,12 +12,11 @@ import { RecentUpdate } from "../utils/data-path";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
+import { usePageProps } from "../contexts/page-props";
 
 dayjs.extend(relativeTime);
 
-type RecentUpdatesProps = BoxProps & {
-  recentUpdates: RecentUpdate[];
-};
+type RecentUpdatesProps = BoxProps;
 
 const iconMap: Record<string, ReactElement> = {
   JavaScript: <IconJavaScript />,
@@ -26,6 +25,7 @@ const iconMap: Record<string, ReactElement> = {
 const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
   pathArray,
   modified,
+  title,
 }) => (
   <Link href={`/${pathArray.join("/")}`} passHref={true}>
     <Card
@@ -34,7 +34,7 @@ const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
     >
       <CardHeader
         avatar={iconMap[pathArray[0]]}
-        title={pathArray.slice(1).join(" ")}
+        title={title}
         subheader={dayjs(modified).fromNow()}
       />
     </Card>
@@ -42,25 +42,27 @@ const UpdateCard: VoidFunctionComponent<RecentUpdate> = ({
 );
 
 export const RecentUpdates: VoidFunctionComponent<RecentUpdatesProps> = ({
-  recentUpdates,
   ...boxProps
-}) => (
-  <Box
-    {...boxProps}
-    component={Paper}
-    sx={{ display: "flex", flexFlow: "column nowrap", padding: 2 }}
-  >
-    <Typography variant="h3">Recent Updates</Typography>
+}) => {
+  const { recentUpdates = [] } = usePageProps();
+  return (
     <Box
-      sx={{
-        display: "flex",
-        flexFlow: "row nowrap",
-        overflowX: "scroll",
-      }}
+      {...boxProps}
+      component={Paper}
+      sx={{ display: "flex", flexFlow: "column nowrap", padding: 2 }}
     >
-      {recentUpdates.map((props) => (
-        <UpdateCard key={props.pathArray.join()} {...props} />
-      ))}
+      <Typography variant="h3">Recent Updates</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexFlow: "row nowrap",
+          overflowX: "scroll",
+        }}
+      >
+        {recentUpdates.map((props) => (
+          <UpdateCard key={props.pathArray.join()} {...props} />
+        ))}
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
