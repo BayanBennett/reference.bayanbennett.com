@@ -2,7 +2,7 @@
 title: Logical NOT Operator
 created: 2021-06-17T03:29:08.835Z
 modified: 2021-06-17T03:29:08.835Z
-tags: [unary, logical, not, operator, ! ]
+tags: [unary, logical, not, operator, "!"]
 ---
 
 > Note: this is different from the [_Bitwise NOT_](/JavaScript/operator/bitwise-NOT) operator.
