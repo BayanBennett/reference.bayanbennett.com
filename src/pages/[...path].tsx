@@ -77,12 +77,15 @@ const JavaScriptPageTemplate: VoidFunctionComponent<JavaScriptPageTemplateProps>
 
     const { tags, title } = frontmatter;
 
+    const fullTitle = [title, path[0], "📚 Reference"].join(" | ");
+
     return (
       <>
         <Head>
-          <title>
-            {title} | {path[0]} | 📚 Reference
-          </title>
+          <title>{fullTitle}</title>
+          <meta name="og:title" content={fullTitle} key="og:title" />
+          <meta name="author" content="Bayan Bennett" key="author" />
+          <meta name="keywords" content={tags.join(", ")} key="keywords" />
         </Head>
         <Typography variant="h1" align="center">
           {title}
