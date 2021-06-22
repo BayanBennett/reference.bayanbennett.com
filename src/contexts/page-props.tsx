@@ -11,7 +11,12 @@ type PageProps = {
 
 const PagePropsContext = createContext<PageProps | null>(null);
 
-export const usePageProps = () => useContext(PagePropsContext);
+export const usePageProps = () => {
+  const context = useContext(PagePropsContext);
+  if (context === null)
+    throw new Error("`usePageProps` does not have a provider");
+  return context;
+};
 
 type WithPageProps = (
   Component: ComponentType<AppProps["pageProps"]>
