@@ -4,6 +4,7 @@ import { RecentUpdate } from "../utils/data-path";
 
 type PageProps = {
   recentUpdates?: RecentUpdate[];
+  path?: string[];
 };
 
 const PagePropsContext = createContext<PageProps>({});
