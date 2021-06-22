@@ -1,13 +1,15 @@
 import { ComponentType, createContext, useContext } from "react";
 import { AppProps } from "next/app";
 import { RecentUpdate } from "../utils/data-path";
+import { PathTreeNode } from "../components/path-tree";
 
 type PageProps = {
-  recentUpdates?: RecentUpdate[];
-  path?: string[];
+  recentUpdates: RecentUpdate[];
+  path: string[];
+  pathTree: PathTreeNode;
 };
 
-const PagePropsContext = createContext<PageProps>({});
+const PagePropsContext = createContext<PageProps | null>(null);
 
 export const usePageProps = () => useContext(PagePropsContext);
 
