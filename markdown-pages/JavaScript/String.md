@@ -1,7 +1,7 @@
 ---
 title: String
 created: 2021-06-08T18:43:36.362Z
-modified: 2021-06-07T00:00:00.000Z
+modified: 2021-06-22T22:31:47.262Z
 tags: [String]
 ---
 
@@ -19,4 +19,13 @@ const areAllStrings = [
 console.assert(areAllStrings);
 
 console.log(doubleQuoteString, singleQuoteString, backtickString);
+```
+
+## Template Strings
+
+```js
+const x = 1;
+const y = `the value of x is ${x}`;
+
+console.assert(y === "the value of x is 1");
 ```
