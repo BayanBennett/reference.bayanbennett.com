@@ -9,6 +9,7 @@ tags: [addition, operator, +]
 ```js
 const x = 1;
 const y = 2;
+
 console.assert(x + y === 3);
 ```
 
@@ -17,6 +18,7 @@ console.assert(x + y === 3);
 ```js
 const x = "1";
 const y = "2";
+
 console.assert(x + y === "12");
 ```
 
