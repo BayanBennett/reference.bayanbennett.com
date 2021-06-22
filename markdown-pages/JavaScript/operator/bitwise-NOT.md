@@ -5,7 +5,7 @@ modified: 2021-06-17T03:29:08.835Z
 video: spLMC-vxQIo
 tags: [unary, bitwise, not, operator, "~"]
 ---
-> Note: this is different from the [_Logical NOT_](/JavaScript/operator/logical-NOT) operator.
+> **📝 Note**: this is different from the [_Logical NOT_](/JavaScript/operator/logical-NOT) operator.
 
 ```js
 const x = ~~0b00000000000000000000000000000100;
