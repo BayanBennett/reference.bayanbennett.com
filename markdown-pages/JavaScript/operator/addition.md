@@ -23,14 +23,3 @@ console.assert(x + y === "12");
 ```
 
 > **👎 Not Recommended**: use `String.concat` or a [template string](/JavaScript/String#template-strings)
-
-## Oddities
-
-### Unary `+` converts operand to `Number`
-
-```js
-console.assert(+"1" === 1);
-console.assert(1 + "1" === "11");
-console.assert("1" + 1 === "11");
-```
-> **👎 Not Recommended**: use `parseInt`
