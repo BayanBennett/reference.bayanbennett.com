@@ -19,7 +19,7 @@ console.assert(typeof {}  === "object");
 
 ## Oddities
 
-### `null` is an Object
+### `null` is an `Object`
 
 ```js
 console.assert(typeof null === "object");
