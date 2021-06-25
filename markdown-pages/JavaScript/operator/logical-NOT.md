@@ -1,7 +1,7 @@
 ---
 title: Logical NOT Operator
 created: 2021-06-17T03:29:08.835Z
-modified: 2021-06-17T03:29:08.835Z
+modified: 2021-06-25T23:39:47.132Z
 tags: [unary, logical, not, operator, "!"]
 ---
 
@@ -27,3 +27,5 @@ const y = "";
 console.assert(!!x === true);
 console.assert(!!y === false);
 ```
+
+> **👎 Not Recommended**: use `Boolean(🔡)` to typecast into boolean values
