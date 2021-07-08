@@ -5,7 +5,7 @@ import {
   GlobalStyles,
   GlobalStylesProps,
 } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { ComponentType } from "react";
 
 export const theme = createTheme({

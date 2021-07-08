@@ -1,6 +1,5 @@
 import * as React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import { ServerStyleSheets } from "@material-ui/styles";
 import { theme } from "../theme";
 import {
   withEmotionCache,
@@ -47,12 +46,9 @@ export default class extends Document {
   }
 
   static getInitialProps: typeof Document.getInitialProps = async (ctx) => {
-    const sheets = new ServerStyleSheets();
-
     ctx.renderPage = new Proxy(ctx.renderPage, {
       apply: (target) =>
         target({
-          enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
           enhanceComponent: withEmotionCache,
         }),
     });
@@ -71,7 +67,6 @@ export default class extends Document {
       ...initialProps,
       styles: [
         ...React.Children.toArray(initialProps.styles),
-        sheets.getStyleElement(),
         ...emotionStyleTags,
       ],
     };
