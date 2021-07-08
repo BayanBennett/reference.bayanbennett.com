@@ -2,9 +2,6 @@ const { InjectManifest } = require("workbox-webpack-plugin");
 const { resolve } = require("path");
 
 module.exports = {
-  future: {
-    webpack5: true,
-  },
   reactStrictMode: true,
   webpack: (config, { isServer, dir }) => {
     if (isServer) return config;
